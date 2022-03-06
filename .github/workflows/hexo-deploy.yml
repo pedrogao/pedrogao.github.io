@@ -15,5 +15,5 @@ jobs:
         env:
           ACCESS_TOKEN: ${{ secrets.HEXO_DEPLOY }}
           BRANCH: gh-pages
-          FOLDER: build
+          FOLDER: public
           BUILD_SCRIPT: npm install && npm run build
