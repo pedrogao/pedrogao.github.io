@@ -1,9 +1,8 @@
-name: deploying Hexo project to GitHub pages
+name: GitHub Actions Build and Deploy
 on:
   push:
     branches:
-      - master # master 分支有 push 行为时就触发这个 action
-
+      - master
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -12,9 +11,9 @@ jobs:
         uses: actions/checkout@master
 
       - name: Build and Deploy
-        uses: theme-keep/hexo-deploy-github-pages-action@master # 使用专门部署 Hexo 到 GitHub pages 的 action
+        uses: JamesIves/github-pages-deploy-action@master
         env:
-          PERSONAL_TOKEN: ${{ secrets.HEXO_DEPLOY }} # secret 名
-          PUBLISH_REPOSITORY: pedrogao/pedrogao.github.io # 公共仓库，格式：GitHub 用户名/仓库名
-          BRANCH: gh-pages # 分支，填 gh-pages 就行
-          PUBLISH_DIR: ./public # 部署 public 目录下的文件
+          ACCESS_TOKEN: ${{ secrets.HEXO_DEPLOY }}
+          BRANCH: gh-pages
+          FOLDER: build
+          BUILD_SCRIPT: npm install && npm run build
