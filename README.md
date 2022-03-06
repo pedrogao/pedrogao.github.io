@@ -5,4 +5,6 @@
 
 ## thanks
 
+- Hexo
 - https://github.com/CodeDaraW/Hacker
+- https://printempw.github.io/use-github-actions-to-deploy-hexo-blog/
