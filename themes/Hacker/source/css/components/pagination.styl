@@ -1,0 +1,48 @@
+$paginationCommonColor = #f03838
+$paginationCommonHoverColor = #fff
+$paginationBorderCommonColor = #e0e0e0
+
+$paginationDarkColor = #f03838
+$paginationDarkHoverColor = #000
+$paginationBorderDarkColor = #636366
+
+.pagination
+  position: relative;
+  margin: 30px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: space-around;
+  -ms-flex-pack: space-around;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+
+  .pagination-prev
+  .pagination-next
+    color $paginationCommonColor
+    font-size 1.6rem
+    border: 1px solid $paginationBorderCommonColor;
+    line-height: 30px;
+    height: 32px;
+    padding: 0 20px;
+    border-radius: 16px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+
+    &:hover
+      color: $paginationCommonHoverColor;
+      background-color: $paginationCommonColor;
+      border-color: $paginationCommonColor;
+
+@media (prefers-color-scheme dark)
+  .pagination
+    .pagination-prev
+    .pagination-next
+      color $paginationDarkColor
+      border: 1px solid $paginationBorderDarkColor;
+
+      &:hover
+        color: $paginationDarkHoverColor;
+        background-color: $paginationDarkColor;
+        border-color: $paginationDarkColor;

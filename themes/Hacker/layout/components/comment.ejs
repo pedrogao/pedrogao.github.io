@@ -1,0 +1,79 @@
+<% if (theme.gitalk){ %>
+	<section id="comment" class="comment">
+		<div id="gitalk-container"></div>
+	</section>
+	<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+	<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+	<script>
+		var gitalk = new Gitalk({
+			clientID: '<%= theme.gitalk_client_id %>',
+			clientSecret: '<%= theme.gitalk_client_secret %>',
+			repo: '<%= theme.gitalk_repo %>',
+			owner: '<%= theme.gitalk_owner %>',
+			admin: ['<%- theme.gitalk_admin.join("', '") %>'],
+			id: location.pathname,
+			distractionFreeMode: false
+		})
+
+		gitalk.render('gitalk-container')
+	</script>
+<% } %>
+<% if (theme.valine){ %>
+	<section id="comment" class="comment">
+		<div id="vcomments"></div>
+	</section>
+	<!-- LeanCloud -->
+	<script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.10.0/dist/av-min.js"></script>
+	<!-- Valine -->
+	<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+	<script>
+		new Valine({
+			el: '#vcomments',
+			appId: '<%= theme.leancloud_id %>',
+			appKey: '<%= theme.leancloud_key %>'
+		})
+	</script>
+<% } %>
+<% if (theme.gitment){ %>
+	<section id="comment" class="comment">
+		<div id="gitment"></div>
+	</section>
+	<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+	<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+	<script>
+		var gitment = new Gitment({
+			owner: '<%= theme.gitment_owner %>',
+			repo: '<%= theme.gitment_repo %>',
+			oauth: {
+				client_id: '<%= theme.gitment_client_id %>',
+				client_secret: '<%= theme.gitment_client_secret %>',
+			},
+		})
+		gitment.render('gitment')
+	</script>
+<% } %>
+<% if (theme.disqus){ %>
+	<section id="comment" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = '<%= theme.disqus_shortname %>';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+<% } %>
