@@ -19,13 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Checkout theme repo
-        uses: actions/checkout@v2
-        with:
-          repository: CodeDaraW/Hacker
-          ref: master
-          path: themes/Hacker
-
       # 这里用的是 Node.js 14.x
       - name: Set up Node.js
         uses: actions/setup-node@v1
