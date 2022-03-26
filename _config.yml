@@ -104,6 +104,6 @@ theme: Hacker
 deploy:
   type: git
   repo: git@github.com:pedrogao/pedrogao.github.io.git
-  branch: master
+  branch: gh-pages
   name: pedrogao
   email: 1312342604@qq.com
