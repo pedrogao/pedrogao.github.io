@@ -2,6 +2,7 @@
 title: go-pool
 date: 2022-02-28 16:34:01
 tags: Go, Pool
+categories: Go
 ---
 
 # Go pool 池化学习、实践总结

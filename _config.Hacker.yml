@@ -1,0 +1,27 @@
+menu:
+  Home: /
+  Archives: /archives
+  Categories: /categories
+  Tags: /tags
+
+# gitment
+gitment: false
+gitment_owner: CodeDaraW
+gitment_repo: Blog
+gitment_client_id: 9f8c0418f979e3f9436d
+gitment_client_secret: 3cb6eb7ebba52973d5d4083533b8eba117462319
+
+# gitalk
+gitalk: false
+gitalk_owner: CodeDaraW
+gitalk_admin: ["CodeDaraW"]
+gitalk_repo: Blog
+gitalk_client_id: 9f8c0418f979e3f9436d
+gitalk_client_secret: 3cb6eb7ebba52973d5d4083533b8eba117462319
+
+# disqus comment
+disqus: false
+disqus_shortname: daraw
+
+# google analytics
+googleTrackId: UA-75095706-1

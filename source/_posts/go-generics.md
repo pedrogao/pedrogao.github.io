@@ -2,6 +2,7 @@
 title: go-generics
 date: 2022-02-28 16:33:14
 tags: Go, generics
+categories: Go
 ---
 
 # Go 泛型尝鲜，实现一个流式处理库
