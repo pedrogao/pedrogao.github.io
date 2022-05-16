@@ -1,61 +1,20 @@
-name: Hexo Deploy
-
-# 只监听 source 分支的改动
-on:
-  push:
-    branches:
-      - master
-
-# 自定义环境变量
-env:
-  POST_ASSET_IMAGE_CDN: true
-
+name: Build and Deploy
+on: [push]
 jobs:
   build-and-deploy:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
-
     steps:
-      # 获取博客源码和主题
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
 
-      # 这里用的是 Node.js 14.x
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
-          node-version: "14"
-
-      # 设置 yarn 缓存，npm 的话可以看 actions/cache@v2 的文档示例
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Use yarn cache
-        uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      # 安装依赖
-      - name: Install dependencies
-        run: |
-          yarn install --prefer-offline --frozen-lockfile
-
-      # 从之前设置的 secret 获取部署私钥
-      - name: Set up environment
-        env:
-          DEPLOY_KEY: ${{ secrets.HEXO_DEPLOY_PRI }}
-        run: |
-          sudo timedatectl set-timezone "Asia/Shanghai"
-          mkdir -p ~/.ssh
-          echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      # 生成并部署
-      - name: Deploy
-        run: |
-          npx hexo deploy --generate
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build # The folder the action should deploy.
