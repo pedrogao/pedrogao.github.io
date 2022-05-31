@@ -19,6 +19,11 @@ export default navbar([
           "magic2",
         ],
       },
+      {
+        text: "network",
+        prefix: "network/",
+        children: ["tcp-impl"],
+      },
     ],
   },
 ]);

@@ -22,6 +22,13 @@ export default sidebar([
           "magic2",
         ],
       },
+      {
+        text: "network",
+        icon: "note",
+        collapsable: true,
+        prefix: "network/",
+        children: ["tcp-impl"],
+      },
     ],
   },
 ]);
