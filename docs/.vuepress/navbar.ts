@@ -10,7 +10,14 @@ export default navbar([
       {
         text: "go",
         prefix: "go/",
-        children: ["generics", "pool", "magic", "magic2"],
+        children: [
+          "helloworld",
+          "plan9",
+          "generics",
+          "pool",
+          "magic",
+          "magic2",
+        ],
       },
     ],
   },
