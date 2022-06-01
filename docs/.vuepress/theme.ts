@@ -16,7 +16,6 @@ export default hopeTheme({
 
   repo: "https://github.com/pedrogao/pedrogao.github.io",
 
-  
   // docsDir: "demo/src",
 
   // navbar
@@ -25,7 +24,7 @@ export default hopeTheme({
   // sidebar
   sidebar: sidebar,
 
-  footer: "pedrogao",
+  footer: "当开始算运气的时候，就不太可能被运气照顾。",
 
   displayFooter: true,
 

@@ -29,6 +29,20 @@ export default sidebar([
         prefix: "network/",
         children: ["tcp-impl"],
       },
+      {
+        text: "distribute",
+        icon: "note",
+        collapsable: true,
+        prefix: "distribute/",
+        children: ["raft"],
+      },
+      {
+        text: "frontend",
+        icon: "note",
+        collapsable: true,
+        prefix: "frontend/",
+        children: ["tiny-react"],
+      },
     ],
   },
 ]);

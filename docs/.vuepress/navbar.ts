@@ -24,6 +24,16 @@ export default navbar([
         prefix: "network/",
         children: ["tcp-impl"],
       },
+      {
+        text: "distribute",
+        prefix: "distribute/",
+        children: ["raft"],
+      },
+      {
+        text: "frontend",
+        prefix: "frontend/",
+        children: ["tiny-react"],
+      },
     ],
   },
 ]);
