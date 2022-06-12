@@ -24,5 +24,15 @@ projects:
     desc: simple, high performance, easy to use web framework.
     link: https://github.com/pedrogao/simplesrv
 
+  - icon: project
+    name: simplerpc
+    desc: A simple, easy to use, high performance, pluggable micro services framework
+    link: https://github.com/pedrogao/simplerpc
+
+  - icon: project
+    name: tinyos
+    desc: "基于 risc-v 平台的简单操作系统，旨在学习 risc-v 和实践"
+    link: https://github.com/pedrogao/tinyos
+
 footer: 取悦别人很难，做自己就好，thanks vuepress-theme-hope.
 ---
