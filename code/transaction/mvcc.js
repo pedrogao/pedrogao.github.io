@@ -107,7 +107,7 @@ class Transaction {
   rowIsVisible(record) {
     // 记录是否可见
 
-    // 如果记录不是自己创建的，且在活跃劣列表中，那么不可见
+    // 如果记录不是自己创建的，且在活跃在列表中，那么不可见
     if (
       record.createdXid !== this.xid &&
       this.table.activeXids.includes(record.createdXid)
