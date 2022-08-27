@@ -20,6 +20,7 @@ export default sidebar([
           "pool",
           "magic",
           "magic2",
+          "mem",
         ],
       },
       {
@@ -28,6 +29,13 @@ export default sidebar([
         collapsable: true,
         prefix: "network/",
         children: ["tcp-impl"],
+      },
+      {
+        text: "os",
+        icon: "note",
+        collapsable: true,
+        prefix: "os/",
+        children: ["linux-patch"],
       },
       {
         text: "distribute",

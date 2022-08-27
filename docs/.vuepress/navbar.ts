@@ -17,12 +17,18 @@ export default navbar([
           "pool",
           "magic",
           "magic2",
+          "mem",
         ],
       },
       {
         text: "network",
         prefix: "network/",
         children: ["tcp-impl"],
+      },
+      {
+        text: "os",
+        prefix: "os/",
+        children: ["linux-patch"],
       },
       {
         text: "distribute",
