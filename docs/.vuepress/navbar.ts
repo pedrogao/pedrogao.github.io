@@ -35,11 +35,6 @@ export default navbar([
         prefix: "distribute/",
         children: ["raft"],
       },
-      {
-        text: "frontend",
-        prefix: "frontend/",
-        children: ["tiny-react"],
-      },
     ],
   },
 ]);

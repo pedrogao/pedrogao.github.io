@@ -44,13 +44,6 @@ export default sidebar([
         prefix: "distribute/",
         children: ["raft"],
       },
-      {
-        text: "frontend",
-        icon: "note",
-        collapsable: true,
-        prefix: "frontend/",
-        children: ["tiny-react"],
-      },
     ],
   },
 ]);
