@@ -7,7 +7,8 @@ heroImage: /photo.jpg
 heroText: 廊中别苑
 heroFullScreen: false
 bgImage: /backgroud.jpeg
-tagline: 我们不是在这里开发一些实用的东西，我们纯粹是为了学习而选择挑战。
+# tagline: 我们不是在这里开发一些实用的东西，我们纯粹是为了学习而选择挑战。
+tagline: 人生，无非就是体验二字。
 projects:
   - icon: project
     name: simplesql

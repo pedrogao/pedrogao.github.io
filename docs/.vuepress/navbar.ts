@@ -40,6 +40,18 @@ export default navbar([
         prefix: "engineering/",
         children: ["tdd1"],
       },
+      {
+        text: "database",
+        prefix: "database/",
+        children: [
+          "cmu15445-1",
+          "cmu15445-2",
+          "cmu15445-3",
+          "cmu15445-4",
+          "cmu15445-5",
+          "cmu15445-6",
+        ],
+      },
     ],
   },
 ]);
