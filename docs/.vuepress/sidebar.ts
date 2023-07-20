@@ -65,6 +65,15 @@ export default sidebar([
           "cmu15445-6",
         ],
       },
+      {
+        text: "co",
+        icon: "note",
+        collapsable: true,
+        prefix: "co/",
+        children: [
+          "sheet",
+        ],
+      },
     ],
   },
 ]);

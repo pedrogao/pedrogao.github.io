@@ -52,6 +52,11 @@ export default navbar([
           "cmu15445-6",
         ],
       },
+      {
+        text: "co",
+        prefix: "co/",
+        children: ["sheet"],
+      },
     ],
   },
 ]);
