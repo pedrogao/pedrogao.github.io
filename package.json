@@ -3,16 +3,37 @@
   "version": "2.0.0",
   "description": "A project of vuepress-theme-hope",
   "license": "MIT",
+  "bin": {
+    "island": "./bin/island.js"
+  },
   "scripts": {
     "docs:build": "vuepress build docs",
     "docs:clean-dev": "vuepress dev docs --clean-cache",
-    "docs:dev": "vuepress dev docs"
+    "docs:dev": "vuepress dev docs",
+    "island:dev": "island dev docs",
+    "island:build": "island build docs",
+    "island:preview": "island start docs",
+    "ts:start": "tsc -w"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "@types/node": "^20.5.0",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
     "@vuepress/client": "^2.0.0-beta.46",
+    "islandjs": "^0.7.31",
+    "rollup": "^3.28.0",
+    "typescript": "^5.1.6",
     "vue": "^3.2.33",
     "vuepress": "^2.0.0-beta.46",
     "vuepress-theme-hope": "^2.0.0-beta.74"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.0.4",
+    "cac": "^6.7.14",
+    "fs-extra": "^11.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vite": "^4.4.9"
+  }
 }

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "ESNext",
+    "module": "commonjs",
+    "rootDir": "src",
+    "jsx": "react-jsx"
+  }
+}
