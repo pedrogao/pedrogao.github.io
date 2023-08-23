@@ -1,12 +1,14 @@
 import { createRoot } from 'react-dom/client';
-import { App } from './App';
-import siteData from 'island:site-data';
-
-console.log(siteData);
+import { App } from './app';
+import { BrowserRouter } from 'react-router-dom';
 
 function renderInBrowser() {
   const root = document.getElementById('root');
-  createRoot(root).render(<App />);
+  createRoot(root).render(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
 }
 
 renderInBrowser();

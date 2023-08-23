@@ -1,12 +1,13 @@
-import { relative } from 'path';
+import { join, relative } from 'path';
 import { Plugin } from 'vite';
 import { SiteConfig } from 'shared/types';
+import { PACKAGE_ROOT } from '../constants';
 
 const SITE_DATA_ID = 'island:site-data';
 
 export function pluginConfig(
   config: SiteConfig,
-  restartServer: () => Promise<void>
+  restartServer?: () => Promise<void>
 ): Plugin {
   // let server: ViteDevServer | null = null;
   return {
@@ -34,8 +35,18 @@ export function pluginConfig(
           `\n${relative(config.root, ctx.file)} changed, restarting server...`
         );
         // 重启 Dev Server
-        await restartServer();
+        await restartServer!();
       }
+    },
+    config() {
+      return {
+        root: PACKAGE_ROOT,
+        resolve: {
+          alias: {
+            '@runtime': join(PACKAGE_ROOT, 'src', 'runtime', 'index.ts')
+          }
+        }
+      };
     }
   };
 }

@@ -1,30 +1,36 @@
 import fs from 'fs-extra';
 import ora from 'ora';
-import { join } from 'path';
+import path, { join } from 'path';
 import { build as viteBuild, InlineConfig } from 'vite';
 import type { RollupOutput } from 'rollup';
 import { CLIENT_ENTRY_PATH, SERVER_ENTRY_PATH } from './constants';
 import pluginReact from '@vitejs/plugin-react';
-// import { pathToFileURL } from "url";
+import { SiteConfig } from 'shared/types';
+import { pluginConfig } from './plugin-island/config';
 
-export async function build(root: string = process.cwd()) {
-  const [clientBundle] = await bundle(root);
-  // 引入 ssr 入口模块
+export async function build(root: string = process.cwd(), config: SiteConfig) {
+  const [clientBundle] = await bundle(root, config);
   const serverEntryPath = join(root, '.temp', 'ssr-entry.js');
   const { render } = await import(serverEntryPath);
-  // const { render } = (await import(pathToFileURL(serverEntryPath).pathname));
-  await renderPage(render, root, clientBundle);
+  try {
+    await renderPage(render, root, clientBundle);
+  } catch (error) {
+    console.log('Render page error: ', error);
+  }
 }
 
-export async function bundle(root: string) {
+export async function bundle(root: string, config: SiteConfig) {
   const resolveViteConfig = (isServer: boolean) => ({
     mode: 'production',
     root,
-    // 注意加上这个插件，自动注入 import React from 'react'，避免 React is not defined 的错误
-    plugin: [pluginReact()],
+    plugin: [pluginReact(), pluginConfig(config)],
+    ssr: {
+      noExternal: ['react-router-dom']
+    },
     build: {
+      minify: false,
       ssr: isServer,
-      outDir: isServer ? '.temp' : 'build',
+      outDir: isServer ? path.join(root, '.temp') : 'build',
       rollupOptions: {
         input: isServer ? SERVER_ENTRY_PATH : CLIENT_ENTRY_PATH,
         output: {
