@@ -42,7 +42,7 @@ export default sidebar([
         icon: "note",
         collapsable: true,
         prefix: "distribute/",
-        children: ["raft"],
+        children: ["raft", "rpc"],
       },
       {
         text: "engineering",
@@ -66,13 +66,11 @@ export default sidebar([
         ],
       },
       {
-        text: "co",
+        text: "collaborate",
         icon: "note",
         collapsable: true,
         prefix: "co/",
-        children: [
-          "sheet",
-        ],
+        children: ["sheet"],
       },
     ],
   },
