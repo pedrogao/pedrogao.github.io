@@ -33,7 +33,7 @@ export default navbar([
       {
         text: "distribute",
         prefix: "distribute/",
-        children: ["raft"],
+        children: ["raft", "rpc"],
       },
       {
         text: "engineering",
@@ -53,7 +53,7 @@ export default navbar([
         ],
       },
       {
-        text: "co",
+        text: "collaborate",
         prefix: "co/",
         children: ["sheet"],
       },
