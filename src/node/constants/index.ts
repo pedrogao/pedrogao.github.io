@@ -13,3 +13,7 @@ export const SERVER_ENTRY_PATH = join(RUNTIME_PATH, 'ssr-entry.tsx');
 export const PUBLIC_DIR = '.island/public';
 
 export const MD_REGEX = /\.mdx?$/;
+
+export const MASK_SPLITTER = '!!ISLAND!!';
+
+export const CLIENT_OUTPUT = 'build';
