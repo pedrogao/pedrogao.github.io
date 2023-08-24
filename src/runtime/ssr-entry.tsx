@@ -1,14 +1,18 @@
-import { App } from './app';
+import { App, initPageData } from './app';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
+import { DataContext } from './hooks';
 
-export function render() {
+export async function render(pagePath: string) {
+  const pageData = await initPageData(pagePath);
+
   return renderToString(
-    <StaticRouter location={'/guide'}>
-      <App />
-    </StaticRouter>
+    <DataContext.Provider value={pageData}>
+      <StaticRouter location={pagePath}>
+        <App />
+      </StaticRouter>
+    </DataContext.Provider>
   );
 }
 
-// 导出路由数据
 export { routes } from 'island:routes';

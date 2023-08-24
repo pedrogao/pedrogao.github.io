@@ -1,29 +1,32 @@
-import { defineConfig } from "islandjs";
+import { defineConfig } from '../../dist';
 
 export default defineConfig({
+  title: 'xxx',
   themeConfig: {
     nav: [
-      {
-        text: "Home",
-        link: "/",
-      },
+      { text: '主页', link: '/' },
+      { text: '指南', link: '/guide/' }
     ],
     sidebar: {
-      "/": [
+      '/guide/': [
         {
-          text: "文章列表",
+          text: '教程',
           items: [
             {
-              text: "magic",
-              link: "/go/magic",
+              text: '快速上手',
+              link: '/guide/a'
             },
             {
-              text: "magic1",
-              link: "/go/magic2",
+              text: '如何安装',
+              link: '/guide/b'
             },
-          ],
-        },
-      ],
-    },
-  },
+           {
+             text: '注意事项',
+             link: '/guide/c'
+           }
+          ]
+        }
+      ]
+    }
+  }
 });

@@ -9,3 +9,7 @@ export const DEFAULT_HTML_PATH = join(PACKAGE_ROOT, 'template.html');
 export const CLIENT_ENTRY_PATH = join(RUNTIME_PATH, 'client-entry.tsx');
 
 export const SERVER_ENTRY_PATH = join(RUNTIME_PATH, 'ssr-entry.tsx');
+
+export const PUBLIC_DIR = '.island/public';
+
+export const MD_REGEX = /\.mdx?$/;

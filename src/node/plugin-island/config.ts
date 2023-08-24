@@ -1,7 +1,9 @@
 import { join, relative } from 'path';
 import { Plugin } from 'vite';
 import { SiteConfig } from 'shared/types';
-import { PACKAGE_ROOT } from '../constants';
+import { PACKAGE_ROOT, PUBLIC_DIR } from '../constants';
+import sirv from 'sirv';
+import fs from 'fs-extra';
 
 const SITE_DATA_ID = 'island:site-data';
 
@@ -9,7 +11,6 @@ export function pluginConfig(
   config: SiteConfig,
   restartServer?: () => Promise<void>
 ): Plugin {
-  // let server: ViteDevServer | null = null;
   return {
     name: 'island:config',
     resolveId(id) {
@@ -22,9 +23,6 @@ export function pluginConfig(
         return `export default ${JSON.stringify(config.siteData)}`;
       }
     },
-    // configureServer(s) {
-    //   server = s;
-    // },
     async handleHotUpdate(ctx) {
       const customWatchedFiles = [config.configPath];
       const include = (id: string) =>
@@ -34,7 +32,6 @@ export function pluginConfig(
         console.log(
           `\n${relative(config.root, ctx.file)} changed, restarting server...`
         );
-        // 重启 Dev Server
         await restartServer!();
       }
     },
@@ -45,8 +42,20 @@ export function pluginConfig(
           alias: {
             '@runtime': join(PACKAGE_ROOT, 'src', 'runtime', 'index.ts')
           }
+        },
+        css: {
+          modules: {
+            localsConvention: 'camelCaseOnly'
+          }
         }
       };
+    },
+    configureServer(server) {
+      const publicDir = join(config.root, PUBLIC_DIR);
+      // console.log(publicDir);
+      if (fs.pathExistsSync(publicDir)) {
+        server.middlewares.use(sirv(publicDir));
+      }
     }
   };
 }

@@ -43,6 +43,7 @@ export async function resolveConfig(
   mode: 'development' | 'production'
 ) {
   const [configPath, userConfig] = await resolveUserConfig(root, command, mode);
+  console.log(configPath, userConfig);
 
   const siteConfig: SiteConfig = {
     root,
@@ -54,7 +55,7 @@ export async function resolveConfig(
 
 function getUserConfigPath(root: string) {
   try {
-    const supportedConfigFiles = ['config.ts', 'config.js'];
+    const supportedConfigFiles = ['.island/config.ts', '.island/config.js'];
     const configPath = supportedConfigFiles
       .map((file) => {
         return path.resolve(root, file);
