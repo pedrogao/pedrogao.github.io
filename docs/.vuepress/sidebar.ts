@@ -2,7 +2,6 @@ import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar([
   "/",
-  // "/slide",
   {
     text: "文章",
     icon: "note",
@@ -11,7 +10,7 @@ export default sidebar([
       {
         text: "go",
         icon: "note",
-        collapsable: true,
+        collapsible: true,
         prefix: "go/",
         children: [
           "helloworld",
@@ -26,35 +25,35 @@ export default sidebar([
       {
         text: "network",
         icon: "note",
-        collapsable: true,
+        collapsible: true,
         prefix: "network/",
         children: ["tcp-impl"],
       },
       {
         text: "os",
         icon: "note",
-        collapsable: true,
+        collapsible: true,
         prefix: "os/",
         children: ["linux-patch"],
       },
       {
         text: "distribute",
         icon: "note",
-        collapsable: true,
+        collapsible: true,
         prefix: "distribute/",
-        children: ["raft", "rpc"],
+        children: ["raft", "rpc", "diskqueue", "tinymq"],
       },
       {
         text: "engineering",
         icon: "note",
-        collapsable: true,
+        collapsible: true,
         prefix: "engineering/",
         children: ["tdd1"],
       },
       {
         text: "database",
         icon: "note",
-        collapsable: true,
+        collapsible: true,
         prefix: "database/",
         children: [
           "cmu15445-1",
@@ -68,7 +67,7 @@ export default sidebar([
       {
         text: "collaborate",
         icon: "note",
-        collapsable: true,
+        collapsible: true,
         prefix: "co/",
         children: ["sheet"],
       },

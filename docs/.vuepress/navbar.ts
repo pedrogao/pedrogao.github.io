@@ -33,7 +33,7 @@ export default navbar([
       {
         text: "distribute",
         prefix: "distribute/",
-        children: ["raft", "rpc"],
+        children: ["raft", "rpc", "diskqueue", "tinymq"],
       },
       {
         text: "engineering",
