@@ -49,5 +49,21 @@ export default hopeTheme({
     mdEnhance: {
       presentation: ["highlight", "math", "search", "notes", "zoom"],
     },
+    components: {
+      components: ["PDF"],
+    },
+    comment: {
+      provider: "Giscus",
+      repo: "pedrogao/pedrogao.github.io",
+      repoId: "R_kgDOG68Q-A",
+      category: "Q&A",
+      categoryId: "DIC_kwDOG68Q-M4CZ5GN",
+      mapping: "pathname",
+      strict: false,
+      lazyLoading: true,
+      reactionsEnabled: true,
+      inputPosition: "bottom",
+      lightTheme: "light",
+    },
   },
 });
