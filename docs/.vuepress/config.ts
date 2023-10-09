@@ -1,6 +1,8 @@
 import { defineUserConfig } from "vuepress";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
+import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
 import theme from "./theme";
+import path from "path";
 
 export default defineUserConfig({
   lang: "zh-CN",
@@ -13,6 +15,9 @@ export default defineUserConfig({
     searchProPlugin({
       indexContent: true,
       autoSuggestions: true,
+    }),
+    registerComponentsPlugin({
+      componentsDir: path.resolve(__dirname, "./views"),
     }),
   ],
 });

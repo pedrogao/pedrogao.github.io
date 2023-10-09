@@ -4,6 +4,9 @@ devDependencies:
   '@vuepress/client':
     specifier: 2.0.0-beta.67
     version: 2.0.0-beta.67
+  '@vuepress/plugin-register-components':
+    specifier: 2.0.0-beta.67
+    version: 2.0.0-beta.67
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -2194,6 +2197,17 @@ packages:
     dependencies:
       '@vuepress/core': 2.0.0-beta.67
       prismjs: 1.29.0
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - supports-color
+    dev: true
+
+  /@vuepress/plugin-register-components@2.0.0-beta.67:
+    resolution: {integrity: sha512-dbdCnlY/MAzyrycwIONDOtZbHvv2r5yenXPO18IOy5bAFnlaEOL2RfPjD6MqRlYS3aZD7om21RV3RxGHJabHew==}
+    dependencies:
+      '@vuepress/core': 2.0.0-beta.67
+      '@vuepress/utils': 2.0.0-beta.67
+      chokidar: 3.5.3
     transitivePeerDependencies:
       - '@vue/composition-api'
       - supports-color
