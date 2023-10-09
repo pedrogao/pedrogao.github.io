@@ -115,7 +115,7 @@ State-based Counter 在实现上稍微复杂一些，本地状态不再是一个
 
 #### Op-based Counter
 
-首先是 [Op-based Counter](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/config.ts) 的实现 OBCounter：
+首先是 [Op-based Counter](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/counter.ts) 的实现 OBCounter：
 
 ```js
 export class OBCounter {
@@ -254,11 +254,11 @@ OBCounter 本地状态变更有两个核心方法：
   }
 ```
 
-至此，一个简单的 OBCounter 就实现了，可以通过上面`Counter`[demo](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/config.ts) 来体验一下。
+至此，一个简单的 OBCounter 就实现了，可以通过上面`Counter`[demo](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/views/CounterDemo1.vue) 来体验一下。
 
 #### State-based Counter
 
-[State-based Counter](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/config.ts) 的实现思路和 OBCounter 大不一样，由于 SBCounter 核心在于状态，为了保存所有客户端的数值状态，我们需要一个`Map`来保存；在通信上，由于传输的数据内容是状态，因此也无需 op，直接传输状态即可。
+[State-based Counter](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/counter.ts) 的实现思路和 OBCounter 大不一样，由于 SBCounter 核心在于状态，为了保存所有客户端的数值状态，我们需要一个`Map`来保存；在通信上，由于传输的数据内容是状态，因此也无需 op，直接传输状态即可。
 
 ```js
 export class SBCounter {
@@ -362,7 +362,7 @@ Operation-based LWW-Register 伪代码如下：
 
 变量`x`在初始化时，需要携带一个`timestamp`标识 x 的声明周期，当 x 被修改时，需要更新`timestamp`，这样才能保证最后写入的值胜出。
 
-具体的实现：
+具体的[实现](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/register.ts)：
 
 ```js
 export class OBLWWRegister<T> {
@@ -438,7 +438,7 @@ export class OBLWWRegister<T> {
 
 `clock`和`vector`来实现 op 去重。
 
-OBLWWRegister 可通过下面的 demo 来体验：
+OBLWWRegister 可通过下面的 [demo](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/views/RegisterDemo.vue) 来体验：
 
 ---
 
@@ -454,7 +454,7 @@ State-based LWW-Register 伪代码如下：
 
 ![State-based LWW-Register](../../imgs/State-based-LWW-Register.png)
 
-与 SBCounter 相比，SBLWWRegister 实现更加简单，由于`value`是时间戳大的一方获胜，因此 merge 时，只需判断双方`clock`大小即可，如果相等，则判断双方 clientId 大小：
+与 SBCounter 相比，SBLWWRegister [实现](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/register.ts)更加简单，由于`value`是时间戳大的一方获胜，因此 merge 时，只需判断双方`clock`大小即可，如果相等，则判断双方 clientId 大小：
 
 ```js
 export class SBLWWRegister<T> {
@@ -496,7 +496,7 @@ export class SBLWWRegister<T> {
 
 `LWWRegister` 用于表示一个变量，在其基础上，我们可以扩展出多个变量，即`MultiLWWRegister`，实际上这就是 `Map` 的 CRDT 实现。
 
-MultiLWWRegister 实现上也必须能支持多个值：
+MultiLWWRegister [实现](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/register.ts)上也必须能支持多个值：
 
 ```js
 export class MultiLWWRegister<T> {
@@ -575,7 +575,7 @@ export class MultiLWWRegister<T> {
 
 核心在`apply`上，当发现 op 的时间戳小于当前时间戳，或者时间戳相等但 clientId 大于当前 clientId 时，忽略该 op，就样就能保证此时的值是最新的。
 
-MultiLWWRegister 可通过下面的 demo 来体验：
+MultiLWWRegister 可通过下面的 [demo](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/views/MulRegisterDemo.vue) 来体验：
 
 ---
 
