@@ -1,0 +1,1 @@
+const s=t=>{let r="";const e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",c=e.length;for(let n=0;n<t;n++)r+=e.charAt(Math.floor(Math.random()*c));return r};var a=(t=>(t.Increment="increment",t.Decrement="decrement",t.Set="set",t.KV="kv",t))(a||{});const o={equals(t,r){return t===r||t[0]===r[0]&&t[1]===r[1]}};export{o as I,a as O,s as r};
