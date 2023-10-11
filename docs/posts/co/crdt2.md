@@ -44,7 +44,7 @@ RGA 全称 Replicate Growable Array 可复制增长数组，由 Hyun 于 2011 �
 
 ## 案例
 
-下面，以[纯文本协同编辑](XXX)为例，看看 RGA 是如何工作的。
+下面，以[纯文本协同编辑](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/views/RGADemo.vue)为例，看看 RGA 是如何工作的。
 
 ---
 
@@ -166,7 +166,7 @@ export type Item<T> = {
 
 ## 实现
 
-充分推演后，我们就能给出一个[简单 RGA 的实现](XXXX)了。
+充分推演后，我们就能给出一个[简单 RGA 的实现](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/rga.ts)了。
 
 首先是数据建模，每个插入字符操作被抽象为一个`Item`：
 
@@ -380,7 +380,7 @@ private integrate(item: Item<T>) {
 
 Automerge 是为数不多将 RGA 用在生产环境上的 CRDT 库，RGA 是 Automerge 中的核心算法部分，设计方式和实现思路都很有借鉴性。
 
-笔者实现了一个 toy 版本：[TinyAutomerge](xxxx)。
+笔者实现了一个 toy 版本：[TinyAutomerge](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/automerge.ts)。
 
 TinyAutomerge 是 Automerge 的一个极简版本，它是按照笔者个人理解以及 [Automerge 文档](https://cdnm67bsp6.feishu.cn/docx/UvbRdESXzor1PyxkTPvcA3xAn4b)来实现的，可以帮助我们更好的理解 Automerge 和 RGA。
 
@@ -389,6 +389,8 @@ TinyAutomerge 是 Automerge 的一个极简版本，它是按照笔者个人理�
 TODO
 
 ## 结语
+
+TODO
 
 ## 参考资料
 
