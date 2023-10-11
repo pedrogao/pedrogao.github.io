@@ -9,8 +9,11 @@
     "docs:dev": "vuepress dev docs"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@vuepress/client": "2.0.0-beta.67",
     "@vuepress/plugin-register-components": "2.0.0-beta.67",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
     "vue": "^3.3.4",
     "vuepress": "2.0.0-beta.67",
     "vuepress-plugin-comment2": "2.0.0-beta.237",
