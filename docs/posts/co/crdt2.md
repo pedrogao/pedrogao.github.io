@@ -386,11 +386,304 @@ TinyAutomerge 是 Automerge 的一个极简版本，它是按照笔者个人理�
 
 > Automerge 中 RGA 的[实现文档](https://cdnm67bsp6.feishu.cn/docx/UvbRdESXzor1PyxkTPvcA3xAn4b)其实已经被官方文档删除掉了，笔者在 github 上找到了以前的 commit，然后将其复制到了飞书文档，希望能帮助到对 Automerge 感兴趣的人
 
-TODO
+TinyAutomerge 支持两种 CRDT 数据类型以及其基本操作：
+
+- List(Text):
+  - `insert(pos, content)`
+  - `delete(pos)`
+  - `put(pos, content)`
+  - `get(pos)`
+  - `range(start, end)`
+- Map:
+  - `put(key, value)`
+  - `get(key)`
+  - `delete(key)`
+  - `range(start, end)`
+
+> Text 纯文本本质上和 List 是一样的，因此这里没有额外实现。
+
+下面就 Automerge 核心数据结构建模以及基本操作伪代码做一个简单的介绍。
+
+### 数据结构建模
+
+`TinyAutomerge`仍然以`Operation(操作)`作为核心建模方式，任何一个基本操作，包括`insert`、`delete`、`put`、`get`都可以被抽象为一个`Operation`：
+
+```ts
+export type Operation<T> = {
+  id: OpId;
+  prop: string; // map property name or array insert|update origin intention
+  insert: boolean;
+  value: T | null | "make(map)" | "make(list)"; // null means delete
+  pred: OpId[];
+  succ: OpId[];
+};
+```
+
+这里的`OpId`其实也是 Lamport 时钟，也即是`[actorId, clock]`，`actorId`是一个字符串，`clock`是一个数字。
+
+在`Automerge`中 actorId 其实就是`siteId`。
+
+每个`Operation`都有唯一的`id`，`insert`字段表示是否为插入操作；
+
+`prop`字段略微有点特殊，对于`Map`来说，`prop`就是`map`中的某个`key`，对于`List`来说，`prop` 操作意图，即插入位置前一项。
+
+另外 `pred` 和 `succ` 字段分别标识操作的前驱、后继操作，以`Map`为例，如果多个`put`操作的`key`相同，那么这些`put`操作的`pred`和`succ`就会形成一个双链表，最后的操作在链表最后端。
+
+如果`Operation`的 succ 不为空，证明这个`Operation`已经`过期`了，因为有新的`Operation`插入到了这个`Operation`之后。
+
+而`delete`略有不同，因为 delete 没有实际的删除数据，只是将上一个`Operation`的`succ`指向自己，这样就可以将`Operation`从链表中软移除了。
+
+同样地，文档是操作的集合：
+
+```ts
+type OpTree<T> = {
+  parent: ObjId | null; // null means root
+  objType: ObjType; // map or list
+  store: Array<Operation<T>>; // sorted by OpId or Prop
+};
+
+type OpSet<T> = {
+  // Op trees
+  trees: Map<ObjId, OpTree<T>>;
+  // The length of op array
+  length: number;
+};
+
+export type Doc<T> = {
+  ops: OpSet<T>;
+  // The current actor.
+  id: Actor;
+  // The maximum operation counter this document has seen.
+  maxOpCount: number;
+};
+```
+
+`Doc`核心数据实际就是`op`的集合，即`OpSet`。OpSet 下可以有多个 OpTree，每个 `OpTree` 对应一个`Map`或者`List`，`OpTree` 中的`store`是一个操作有序数组，`parent`指向父节点，`objType`标识是`Map`还是`List`。
+
+从这里就可以得出，对于`Map`和`List`的操作一般需要两步：
+
+1. 在`OpSet`中找到对应的`OpTree`，如果没有就创建一个；
+2. 在`OpTree`中查找、变更、对应的`Operation`；
+
+### Map
+
+了解了基本数据结构后，我们就可以来看看`Map`的基本操作实现了。
+
+#### get
+
+伪代码：
+
+```py
+def get(store, prop):
+    operations, _ := search(store, prop);
+    last := operations[opertaions.len - 1];
+    return last.value;
+
+def search(store, prop):
+    result := [];
+    start_idx := index of the first row that matches prop
+    end_idx := store.length
+    for i in range(start_idx, end_idx):
+        if store[i].prop != prop:
+            return result, i;
+        result.append(store[i]);
+    return result, end_idx + 1;
+```
+
+`get(prop)`：
+
+1. 查找`store`，找到与`prop`相关的所有`Operation`；
+2. 返回最后一个`Operation`的`value`；
+
+#### put
+
+伪代码：
+
+```py
+def put(store, prop, value):
+    operations, last_idx := search(store, prop)
+    last := operations[opertaions.len - 1];
+    pred := [last.id]
+
+    local_op := {
+        op: lamport_clock_inc(),
+        obj: table.objId,
+        prop,
+        value: "{value}",
+        pred,
+        succ: []
+    }
+    last.succ.append(local_op.id);
+    insert_op(store, local_op, last_idx);
+```
+
+`put(prop, value)`：
+
+1. 查找`store`，找到与`prop`相关的所有`Operation`；
+2. 生成一个新的`Operation`，`pred`指向最后一个`Operation`；
+3. 将最后一个`Operation`的`succ`指向新的`Operation`；
+4. 将新的`Operation`插入到`store`中；
+
+#### delete
+
+伪代码：
+
+```py
+def delete(store, prop):
+    operations, _ := search(store, prop)
+    last := operations[opertaions.len - 1];
+    pred := [last.id]
+
+    new_clock := lamport_clock_inc()
+    last.succ.append(new_clock);
+```
+
+`delete(prop)`：
+
+1. 查找`store`，找到与`prop`之相关的所有`Operation`；
+2. 生成新的 `lamport_clock`，加入到最后一个`Operation`的`succ`中；
+
+delete 不会生成新的`Operation`，而是将最后一个`Operation`的`succ`指向新的`lamport_clock`，这样就可以将`Operation`从链表中软移除了。如下：
+
+![rga9](../../imgs/rga9.png)
+
+`empty`表示空的`Operation`，只有一个`lamport lock`并指向`age`最后一个`Operation 100`，从而达到删除`age`的效果。
+
+### List
+
+`List`的实现稍微复杂一点，因为`List`没有明确的`key`，而`index`也是动态变化的，所以找到会更加麻烦一点。
+
+#### get
+
+伪代码：
+
+```py
+def get(store, index):
+    operations, _ := nth(store, index);
+    last := operations[operations.len - 1];
+    return last.action.value;
+
+def nth(store, index):
+    seen = 0;
+    // current position
+    pos := 0;
+    // result operations
+    res = [];
+
+    for operation in store:
+        if operation is insert:
+            if seen > index:
+                return res, pos;
+
+        if operation.insert && operation.succ.length == 0:
+                seen += 1;
+
+        if seen == index && operation.succ.length == 0:
+            res.append(operation);
+
+        pos++;
+
+    return res, pos;
+```
+
+`get(index)`：
+
+> 核心点在`nth`即找到第`index`个`Item`上，注意不是`Operation`。
+> 一个列表`Item`会包括一个或者多个`Operation`。
+
+1. 遍历`store`，找到第`index`个`Item`；
+2. 返回最后一个`Operation`的`value`；
+
+![rga11](../../imgs/rga11.png)
+
+如上图所示，第`0`项 Item 只有 1 个`Operation`，第`1`项 Item 有 3 个`Operation`。
+
+#### delete
+
+伪代码：
+
+```py
+def delete(store, index):
+    operations, _ := nth(store, index);
+    first := operations[0];
+    new_clock := lamport_clock_inc()
+    first.succ.append(new_clock);
+```
+
+`delete(index)`：
+
+1. 遍历`store`，找到第`index`个`Item`，即`operations`；
+2. 生成新的 `lamport_clock`，加入到**第一个**`Operation`的`succ`中；
+
+> 这里与 Map 不同，Map 的`delete`是在最后一个`Operation`上加入新的`lamport_clock`，而 List 是在第一个`Operation`上加入新的`lamport_clock`。
+
+#### insert
+
+伪代码：
+
+```py
+def insert(store, index, value):
+    operations, idx := nth(store, index);
+    firstOp = operations[0];
+    prop = firstOp ? (firstOp.insert ? firstOp.id : firstOp.prop) : obj;
+    pred = firstOp ? [firstOp.id] : [];
+    local_op := {
+            op: lamport_clock_inc(),
+            obj: store.id,
+            prop,
+            action: "{value}",
+            succ: null,
+            pred,
+    };
+    if firstOp:
+        firstOp.pred.append(local_op.id);
+    insert_op(store, local_op, idx);
+```
+
+`insert(index, value)`：
+
+1. 遍历`store`，找到第`index`个`Item`；
+2. 生成一个新的`Operation`，`pred`指向`firstOp`，firstOp 可能为空，即插入一个新的`Item`；
+3. 将`firstOp`的`pred`指向新的`Operation`；
+4. 将新的`Operation`插入到`store`中；
+
+#### put
+
+伪代码：
+
+```py
+def put(store, index, value):
+    operations, idx := nth(store, index);
+    if operations.len == 0:
+        return; # not found
+    firstOp = operations[0];
+    prop = firstOp.id;
+    pred = firstOp ? [firstOp.id] : [];
+    local_op := {
+            op: lamport_clock_inc(),
+            obj: store.id,
+            prop,
+            action: "{value}",
+            succ: null,
+            pred,
+    };
+    firstOp.pred.append(local_op.id);
+    insert_op(store, local_op, idx);
+```
+
+`put(index, value)`基本与`insert`类似，但 put 不能插入新的`Item`，只能修改已有的`Item`。
+
+因此未找到`Item`时，直接返回；而`prop`实际就是`firstOp.id`，第一个插入`Operation`的 id。
+
+对于`Text`，其实本质与`List`大差不差，只是`value`是一个字符而已，当然如果需要支持富文本，那就没那么简单了。
+
+RGA 富文本实现可参考[peritext](https://www.inkandswitch.com/peritext/)。
 
 ## 结语
 
-TODO
+本文以 RGA 为切入点，介绍了其基本原理和实现，并参考 RGA 在 Automerge 中的设计，给出了 TinyAutomerge 的实现。
+
+希望能够帮助读者对 CRDT 与 RGA 有一个更加深入的理解。
 
 ## 参考资料
 
@@ -398,3 +691,4 @@ TODO
 - [awesome-crdt](https://github.com/alangibson/awesome-crdt)
 - [Near Real-Time Peer-to-Peer Shared Editing on Extensible Data Types](https://www.researchgate.net/publication/310212186_Near_Real-Time_Peer-to-Peer_Shared_Editing_on_Extensible_Data_Types)
 - [Replicated abstract data types: Building blocks for collaborative applications](http://csl.skku.edu/papers/jpdc11.pdf)
+- [peritext](https://www.inkandswitch.com/peritext/)

@@ -55,7 +55,7 @@ export default navbar([
       {
         text: "collaborate",
         prefix: "co/",
-        children: ["sheet"],
+        children: ["sheet", "crdt1", "crdt2"],
       },
     ],
   },

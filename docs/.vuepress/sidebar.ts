@@ -69,7 +69,7 @@ export default sidebar([
         icon: "note",
         collapsible: true,
         prefix: "co/",
-        children: ["sheet"],
+        children: ["sheet", "crdt1", "crdt2"],
       },
     ],
   },
