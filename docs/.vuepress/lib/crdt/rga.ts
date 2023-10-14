@@ -1,19 +1,5 @@
 import { randomString } from "../string";
-import { Id } from "./op";
-
-export type Vector = Record<string, number>;
-
-export const Vector = {
-  in(id: Id | null, version: Vector) {
-    // Special case: begin id is always in version
-    if (id === null) {
-      return true;
-    }
-
-    const clock = version[id[0]];
-    return clock !== undefined && clock !== null && clock >= id[1];
-  },
-};
+import { Id, Vector } from "./op";
 
 export type Item<T> = {
   content: T | null; // root item has no content

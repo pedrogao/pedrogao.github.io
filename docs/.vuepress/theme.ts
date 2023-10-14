@@ -48,6 +48,8 @@ export default hopeTheme({
     blog: true,
     mdEnhance: {
       presentation: ["highlight", "math", "search", "notes", "zoom"],
+      katex: true,
+      mermaid: true,
     },
     components: {
       components: ["PDF"],

@@ -38,7 +38,7 @@ export default navbar([
       {
         text: "engineering",
         prefix: "engineering/",
-        children: ["tdd1"],
+        children: ["tdd1", "tinybatis"],
       },
       {
         text: "database",
@@ -55,7 +55,7 @@ export default navbar([
       {
         text: "collaborate",
         prefix: "co/",
-        children: ["sheet", "crdt1", "crdt2"],
+        children: ["sheet", "crdt1", "crdt2", "crdt3"],
       },
     ],
   },

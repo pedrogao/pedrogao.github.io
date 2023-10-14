@@ -48,7 +48,7 @@ export default sidebar([
         icon: "note",
         collapsible: true,
         prefix: "engineering/",
-        children: ["tdd1"],
+        children: ["tdd1", "tinybatis"],
       },
       {
         text: "database",
@@ -69,7 +69,7 @@ export default sidebar([
         icon: "note",
         collapsible: true,
         prefix: "co/",
-        children: ["sheet", "crdt1", "crdt2"],
+        children: ["sheet", "crdt1", "crdt2", "crdt3"],
       },
     ],
   },
