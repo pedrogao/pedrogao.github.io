@@ -45,7 +45,7 @@ $$
 
 $origin$的存在是为了解决**并发插入问题**，如下图所示：
 
-![yata1](./yata1.png)
+![yata1](../../imgs/yata1.png)
 
 客户端 1、2 同时在文本`111`中的同一位置插入新的字符`2`，`3`，此时客户端 1、2 的操作都是并发的，因此无法确定谁先谁后，对于这类并发冲突 YATA 定义了 3 条规则：
 
@@ -59,17 +59,17 @@ $origin$的存在是为了解决**并发插入问题**，如下图所示：
 
 这里，笔者尝试用自己的理解来解释规则 1，首先，`origin`连线是这样的：
 
-![yata2](./yata2.png)
+![yata2](../../imgs/yata2.png)
 
 字符插入后，左右连线指向当前相邻的字符，而`origin`连线只会一直指向操作创建时的左边字符，并且不会改变。
 
 `origin`连接不会交叉，即不会出现这样的情况：
 
-![yata3](./yata3.png)
+![yata3](../../imgs/yata3.png)
 
 而下面的两种情况是允许的：
 
-![yata4](./yata4.png)
+![yata4](../../imgs/yata4.png)
 
 通过规则 1，操作意图`origin`与操作`o`这样就能得到如下的性质：
 
@@ -90,7 +90,7 @@ $$
 
 每次插入操作都需要满足上面的 3 条规则，如果不满足，就需要调整操作的位置，使其满足规则。这样就能得出插入算法：
 
-![yata5](./yata5.png)
+![yata5](../../imgs/yata5.png)
 
 `insert`函数有两个参数：
 
@@ -117,7 +117,7 @@ YATA 算法虽然推理起来很麻烦，但实际上最后的算法代码很少
 
 ## 案例
 
-介绍完 YATA 原理后，可以体验一下 YATA 的[实际案例](XXX)，如下是一个纯文本编辑器：
+介绍完 YATA 原理后，可以体验一下 YATA 的[实际案例](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/views/YjsDemo.vue)，如下是一个纯文本编辑器：
 
 ---
 
@@ -132,7 +132,7 @@ YATA 算法虽然推理起来很麻烦，但实际上最后的算法代码很少
 
 ## 实现
 
-在理解 YATA 算法的基础上，我们再来看看 YATA 的[实现](XXX)。
+在理解 YATA 算法的基础上，我们再来看看 YATA 的[实现](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/yata.ts)。
 
 ### YATA 版
 
@@ -275,7 +275,7 @@ export class Doc<T> {
 
 YATA 版实现了论文原有的插入算法，但这版插入算法其实有一个严重的 base case：
 
-![yata6](./yata6.png)
+![yata6](../../imgs/yata6.png)
 
 客户端 1，2 有同一段文本`12`，`1`是`2`的`origin`，现在客户端 2 向`1`插入了一个`3`，按照算法规则，文本会变成`132`；
 
@@ -289,7 +289,7 @@ $$
 o_k(id_k, origin_k, originRight_k, left_k, right_k, isDeleted_k, content_k),
 $$
 
-而这一版的[实现](XXX)，抽象出了新的`Item`类：
+而这一版的[实现](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/yjs.ts)，抽象出了新的`Item`类：
 
 ```ts
 export type Item<T> = {
@@ -378,7 +378,7 @@ private integrate(item: Item<T>) {
 
 yjs 是目前生产环境使用最为广泛 CRDT 库，其设计思想和实现优化都非常值得学习。
 
-[TinyYjs](XXX) 是笔者实现的一个精简版 yjs，支持`YMap`，`YArray`，`YText（纯文本，不支持富文本）`三种数据类型，实现了基本的 CRDT 功能，但没有实现 yjs 的优化，因此可以作为一个学习 yjs 的入门项目。
+[TinyYjs](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/tinyyjs.ts) 是笔者实现的一个精简版 yjs，支持`YMap`，`YArray`，`YText（纯文本，不支持富文本）`三种数据类型，实现了基本的 CRDT 功能，但没有实现 yjs 的优化，因此可以作为一个学习 yjs 的入门项目。
 
 - `YArray`：
   - `insert(index, content)`
@@ -486,11 +486,11 @@ export class Doc {
 
 对于 YArray，YText 这类线性数据结构而言，`Item`之间通过连续的双向链表连接在一起，如下图：
 
-![yata7](./yata7.png)
+![yata7](../../imgs/yata7.png)
 
 对于 YMap 而言，`Item`之间是分离的，如下图：
 
-![yata8](./yata8.png)
+![yata8](../../imgs/yata8.png)
 
 `Item.parentSub`用来表示`YMap`的 key，`Item`是`YMap`的 value，一个`key`上的`value`可能会被多个客户端操作，因此`value`是一个小双向链表。
 
@@ -606,7 +606,7 @@ export class Doc {
 3. 插入位置需要遵循 3 条规则，虽然改成了双向链表，但是判断逻辑基本一致；
 4. 最后，将`Item`插入到链表中。
 
-对于 tinyyjs 的介绍就到这里，感兴趣的可以查看[源码](XXX)。
+对于 tinyyjs 的介绍就到这里，感兴趣的可以查看[源码](https://github.com/pedrogao/pedrogao.github.io/blob/main/docs/.vuepress/lib/crdt/tinyyjs.ts)。
 
 ## 结语
 
