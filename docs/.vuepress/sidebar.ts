@@ -71,6 +71,13 @@ export default sidebar([
         prefix: "co/",
         children: ["sheet", "crdt1", "crdt2", "crdt3"],
       },
+      {
+        text: "ai",
+        icon: "note",
+        collapsible: true,
+        prefix: "ai/",
+        children: ["lsm-tree"],
+      },
     ],
   },
 ]);

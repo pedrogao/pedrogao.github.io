@@ -57,6 +57,11 @@ export default navbar([
         prefix: "co/",
         children: ["sheet", "crdt1", "crdt2", "crdt3"],
       },
+      {
+        text: "ai",
+        prefix: "ai/",
+        children: ["lsm-tree"],
+      },
     ],
   },
 ]);
