@@ -1,0 +1,1 @@
+import{_ as o}from"./plugin-vue_export-helper-c27b6911.js";import{r,o as t,c as n,e as c}from"./app-4eb79304.js";const s={};function _(a,l){const e=r("PDF");return t(),n("div",null,[c(e,{url:"/imgs/谈谈分布式系统建设.pdf","no-toolbar":""})])}const i=o(s,[["render",_],["__file","review1.html.vue"]]);export{i as default};
