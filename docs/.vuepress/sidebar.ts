@@ -41,7 +41,14 @@ export default sidebar([
         icon: "note",
         collapsible: true,
         prefix: "distribute/",
-        children: ["raft", "rpc", "diskqueue", "tinymq", "distributedkv"],
+        children: [
+          "raft",
+          "rpc",
+          "diskqueue",
+          "tinymq",
+          "distributedkv",
+          "patterns",
+        ],
       },
       {
         text: "engineering",
